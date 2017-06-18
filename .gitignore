@@ -1,0 +1,16 @@
+
+*.bin
+*.properties
+.classpath
+*.lock
+.project
+*.gradle
+*.class
+gradlew
+gradlew.bat
+*.bat
+*.sh
+*.txt
+*.g4
+build/classes/main/client_secret.json
+gradle/wrapper/gradle-wrapper.jar
