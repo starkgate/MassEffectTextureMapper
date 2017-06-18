@@ -151,15 +151,28 @@ public class Main extends Application {
 		Sheets service = getSheetsService();
 
 		// Fetch the spreadsheet
-		String spreadsheetId = "1Gvnz_trNOUgW6CSI3eeEYk7SvqsSklIgVuoHDlmw8e8";
-		String range = "Texture_Map_Full!A2:K";
-		ValueRange response = service.spreadsheets().values()
-				.get(spreadsheetId, range)
+		String[] spreadsheetIds = {"1Gvnz_trNOUgW6CSI3eeEYk7SvqsSklIgVuoHDlmw8e8", "1VZKgxDAfASaZVcNHbeIFEClxRxn3v2-sNwSOEvgYHrs"}; // texture map, authors
+		String textureMapRange = "Texture_Map_Full!A2:K";
+		String me2AuthorsRange = "ALOT_ME2!A4:B";
+		String me3AuthorsRange = "ALOT_ME3!A4:B";
+		
+		ValueRange textureMap = service.spreadsheets().values()
+				.get(spreadsheetIds[0], textureMapRange)
 				.execute();
-
 		// Build database of textures
-		List<List<Object>> values = response.getValues();
-		Database database = new Database(values);
+		List<List<Object>> textureMapValues = textureMap.getValues();
+		
+		ValueRange authorsME2 = service.spreadsheets().values()
+				.get(spreadsheetIds[1], me2AuthorsRange)
+				.execute();
+		List<List<Object>> textureAuthorsME2 = authorsME2.getValues();
+		
+		ValueRange authorsME3 = service.spreadsheets().values()
+				.get(spreadsheetIds[1], me3AuthorsRange)
+				.execute();
+		List<List<Object>> textureAuthorsME3 = authorsME3.getValues();
+		
+		Database database = new Database(textureMapValues, textureAuthorsME2, textureAuthorsME3);
 
 		/*
 		 * START
@@ -220,8 +233,8 @@ public class Main extends Application {
 		
 		matchAuthor = new CheckBox();
 		matchAuthor.setText("Match");
-		matchAuthor.setTooltip(new Tooltip("Match texture's author when applicable"));
-		matchAuthor.setDisable(true);
+		matchAuthor.setTooltip(new Tooltip("Match texture's author when applicable\n"
+				+ "Don't use this when the rename option is disabled (inaccurate results)"));
 		
 		portSoloTextures = new CheckBox();
 		portSoloTextures.setText("Solo");
@@ -232,6 +245,7 @@ public class Main extends Application {
 		renameDupes = new CheckBox();
 		renameDupes.setText("Rename");
 		renameDupes.setTooltip(new Tooltip("Rename (don't overwrite) multiple duplicates"));
+
 
 		ToolBar toolbarRight = new ToolBar(new Spacer(), error, renameDupes, portSoloTextures, matchAuthor, gameList);
 		toolbarRight.setPadding(new Insets(0,0,0,0));
@@ -248,6 +262,16 @@ public class Main extends Application {
 		/*
 		 * LISTENERS
 		 */
+		
+		// Don't use match and rename at the same time, results would be inaccurate
+		renameDupes.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				matchAuthor.setDisable(renameDupes.isSelected() ? false : true);
+				matchAuthor.setSelected(false);
+			}
+		});
 
 		btnDetectDupes.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -275,11 +299,12 @@ public class Main extends Application {
 
 						Map<String, Integer> processedHashes = new HashMap<>();
 						for(String sourceHash : crcList) {
-							List<List<String>> crcDuplicates = database.search(sourceHash, selectedGame, getPortSoloTextures());
+							List<List<String>> crcDuplicates = database.search(sourceHash, selectedGame, getPortSoloTextures(), getMatchAuthor());
 							if(crcDuplicates != null) { // if texture can't be found in the texture map, skip it
 								for(List<String> crc : crcDuplicates){
 									String destinationHash = crc.get(0);
-									String author = "";
+									String textureClass = crc.get(1);
+									String author = getMatchAuthor() ? crc.get(2) : "";
 									
 									/*
 									 * Special modes
@@ -298,14 +323,12 @@ public class Main extends Application {
 											processedHashes.put(destinationHash, 1);
 										}
 									}
-									duplicateText.appendText(sourceHash + " -> " + destinationHash + " (" + crc.get(1) + ")"); // crc and class
-									
-									if(getMatchAuthor()) {
-										duplicateText.appendText(" " + author);
-										// find author
-									}
-									
+									duplicateText.appendText(sourceHash + " -> " + destinationHash + " (" + textureClass + ") " + author); // crc and class
 									duplicateText.appendText("\n");
+									
+									if(getMatchAuthor())
+										destinationHash += "\\" + author;
+									
 									print_line.println("copy " + sourceHash + ".dds " + selectedGame + "\\" + destinationHash + ".dds");    								
 								}
 								duplicateText.appendText("\n");

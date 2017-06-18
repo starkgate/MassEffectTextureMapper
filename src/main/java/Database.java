@@ -14,9 +14,13 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 	private IndexedCollection<Texture> ME1_Tree;
 	private IndexedCollection<Texture> ME2_Tree;
 	private IndexedCollection<Texture> ME3_Tree;
+	private IndexedCollection<Texture> ME2_Authors;
+	private IndexedCollection<Texture> ME3_Authors;
 
-	public Database(List<List<Object>> values) {
-		this.database = createDatabase(values);
+	public Database(List<List<Object>> textureMapValues, List<List<Object>> textureAuthorsME2, List<List<Object>> textureAuthorsME3) {
+		database = createDatabase(textureMapValues);
+		ME2_Authors = createAuthors(textureAuthorsME2);
+		ME3_Authors = createAuthors(textureAuthorsME3);
 		try {
 			CSVReader ME1_csv;
 			ME1_csv = new CSVReader(new FileReader("ME1_Tree.csv"), ',');
@@ -46,11 +50,30 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 				if(row.length != 0) {
 					String crc = row[0]; // 0x12345678
 					String name = row[1];
-					tree.add(new Texture(crc, name));
+					tree.add(new Texture(crc, name, false));
 				}
 			}
 		}
 		tree.addIndex(HashIndex.onAttribute(Texture.NAME));
+		return tree;
+	}
+	
+	public ConcurrentIndexedCollection<Texture> createAuthors(List<List<Object>> values) {
+		ConcurrentIndexedCollection<Texture> tree = new ConcurrentIndexedCollection<>();
+
+		if (values == null || values.size() == 0) {
+			System.out.println("Table is empty.");
+		} else {
+			for (int i = 0; i < values.size(); i++) {
+				List<Object> row = values.get(i);
+				if(row.size() != 0) {
+					String crc = row.get(0).toString();
+					String author = row.get(1).toString();
+					tree.add(new Texture(crc, author, true));
+				}
+			}
+		}
+		tree.addIndex(HashIndex.onAttribute(Texture.AUTHOR));
 		return tree;
 	}
 
@@ -79,10 +102,12 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 		return database;
 	}
 
-	public List<List<String>> search(String crc, String game, boolean portSoloTextures) {
+	// Find all duplicates from one texture
+	public List<List<String>> search(String crc, String game, boolean portSoloTextures, boolean matchAuthor) {
 		List<List<String>> result = new ArrayList<>();
 		Texture subresult = null;
 		Query<Texture> query_CRC = equal(Texture.CRC, crc); // find texture
+		String author = findAuthor(game, query_CRC);
 
 		try { // texture in database ?
 			subresult = database.retrieve(query_CRC).iterator().next();
@@ -95,6 +120,11 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 					List<String> row = new ArrayList<>();
 					row.add(t.getCrc());
 					row.add(t.getTextureClass());
+					
+					if(matchAuthor){
+						row.add(author);
+					}
+					
 					result.add(row);
 				}
 			}
@@ -104,15 +134,23 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 					switch(game){
 					case "ME1":
 						subresult = ME1_Tree.retrieve(query_CRC).iterator().next();
+						break;
 					case "ME2":
 						subresult = ME2_Tree.retrieve(query_CRC).iterator().next();
+						break;
 					case "ME3":
 						subresult = ME3_Tree.retrieve(query_CRC).iterator().next();
+						break;
 					}
 
 					List<String> row = new ArrayList<>();
 					row.add(subresult.getCrc());
 					row.add("solo"); // not a duplicate
+					
+					if(matchAuthor){
+						row.add(author);
+					}
+					
 					result.add(row);
 				}
 			} catch(Exception f){
@@ -121,5 +159,23 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 		}
 
 		return result;
+	}
+
+	private String findAuthor(String game, Query<Texture> query_CRC) {
+		String author = "";
+		
+		try { // is there an author ?
+			switch(game){
+			case "ME2":
+				author = ME2_Authors.retrieve(query_CRC).iterator().next().getAuthor();
+				break;
+			case "ME3":
+				author = ME3_Authors.retrieve(query_CRC).iterator().next().getAuthor();
+				break;
+			}			
+		} catch (Exception g) {
+		}
+		
+		return author;
 	}
 }

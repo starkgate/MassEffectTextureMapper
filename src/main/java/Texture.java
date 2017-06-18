@@ -8,6 +8,7 @@ public class Texture {
 	private String name;
 	private String crc;
 	private String textureClass;
+	private String author;
 
 	public Texture(int groupId, String game, String crc, String textureClass) {
 		this.groupId = groupId;
@@ -16,9 +17,14 @@ public class Texture {
 		this.textureClass = textureClass;
 	}
 	
-	public Texture(String crc, String name) {
-		this.name = name;
-		this.crc = crc;
+	public Texture(String crc, String authorOrName, boolean isAuthor) {
+		if(isAuthor){
+			this.author = authorOrName;
+			this.crc = crc;
+		} else {
+			this.name = authorOrName;
+			this.crc = crc;
+		}
 	}
 	
 	public static final Attribute<Texture, String> NAME = new SimpleAttribute<Texture, String>("name") {
@@ -26,6 +32,14 @@ public class Texture {
 		@Override
 		public String getValue(Texture texture, QueryOptions arg1) {
 			return texture.name;
+		}
+	};
+	
+	public static final Attribute<Texture, String> AUTHOR = new SimpleAttribute<Texture, String>("author") {
+
+		@Override
+		public String getValue(Texture texture, QueryOptions arg1) {
+			return texture.author;
 		}
 	};
 	
@@ -71,6 +85,10 @@ public class Texture {
 
 	public String getCrc() {
 		return crc;
+	}
+	
+	public String getAuthor() {
+		return author;
 	}
 	
 	public String getTextureClass() {
