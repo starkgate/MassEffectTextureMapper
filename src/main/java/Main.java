@@ -109,7 +109,7 @@ public class Main extends Application {
 	}
 
 	public List<String> parseString(String input){
-		String[] subresult = input.split("\\n|\\\\|_|.");
+		String[] subresult = input.split("\\n|\\\\|_|\\.");
 		List<String> result = new ArrayList<>();
 		String currentCrc = "";
 		for(String i : subresult) {
@@ -274,7 +274,6 @@ public class Main extends Application {
 						print_line.println("mkdir " + selectedGame);
 
 						Map<String, Integer> processedHashes = new HashMap<>();
-
 						for(String sourceHash : crcList) {
 							List<List<String>> crcDuplicates = database.search(sourceHash, selectedGame, getPortSoloTextures());
 							if(crcDuplicates != null) { // if texture can't be found in the texture map, skip it

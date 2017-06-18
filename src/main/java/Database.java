@@ -16,8 +16,7 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 	private IndexedCollection<Texture> ME3_Tree;
 
 	public Database(List<List<Object>> values) {
-		database = createDatabase(values);
-
+		this.database = createDatabase(values);
 		try {
 			CSVReader ME1_csv;
 			ME1_csv = new CSVReader(new FileReader("ME1_Tree.csv"), ',');
