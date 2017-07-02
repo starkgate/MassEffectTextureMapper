@@ -38,7 +38,7 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 			CsvParser ME_csv = new CsvParser(settings);
 			ME = ME_csv.parseAll(new FileReader(csv_name));
 		} catch (IOException e) { // if csv does not exist or can't be read
-			e.printStackTrace();
+			return;
 		}
 
 		switch (game) {
