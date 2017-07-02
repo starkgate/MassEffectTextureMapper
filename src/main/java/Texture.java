@@ -1,6 +1,6 @@
-import com.googlecode.cqengine.lib.com.googlecode.cqengine.attribute.Attribute;
-import com.googlecode.cqengine.lib.com.googlecode.cqengine.attribute.SimpleAttribute;
-import com.googlecode.cqengine.lib.com.googlecode.cqengine.query.option.QueryOptions;
+import com.googlecode.cqengine.attribute.Attribute;
+import com.googlecode.cqengine.attribute.SimpleAttribute;
+import com.googlecode.cqengine.query.option.QueryOptions;
 
 public class Texture {
 	private int groupId;
