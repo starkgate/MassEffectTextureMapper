@@ -33,7 +33,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 
-public class Main extends Application {
+public class TextureMapper extends Application {
 	/** Application name. */
 	private static final String APPLICATION_NAME = "Texture Mapper";
 
@@ -76,7 +76,7 @@ public class Main extends Application {
 	 */
 	public static Credential authorize() throws IOException {
 		// Load client secrets.
-		InputStream in = Main.class.getResourceAsStream("client_secret.json");
+		InputStream in = TextureMapper.class.getResourceAsStream("client_secret.json");
 		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
 		// Build flow and trigger user authorization request.

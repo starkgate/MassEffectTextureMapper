@@ -31,12 +31,12 @@ public class Database extends ConcurrentIndexedCollection<Texture> {
 	public void setupTree(int game) {
 		String csv_name = "ME" + game + "_Tree.csv";
 
-		List<String[]> ME = null;
+		List<String[]> ME = new ArrayList<>();
 		try {
 			CsvParserSettings settings = new CsvParserSettings();
 			settings.getFormat().setLineSeparator("\n");
 			CsvParser ME_csv = new CsvParser(settings);
-			ME = ME_csv.parseAll(new FileReader(csv_name));
+			ME.addAll(ME_csv.parseAll(new FileReader(csv_name)));
 		} catch (IOException e) { // if csv does not exist or can't be read
 			return;
 		}
