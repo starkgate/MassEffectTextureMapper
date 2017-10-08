@@ -115,6 +115,7 @@ public class TextureMapper extends Application {
 	private CheckBox renameDupes;
 	private CheckBox matchAuthor;
 	private CheckBox portSoloTextures;
+	private CheckBox bmpPngDdsFormats;
 
 	public boolean getRenameDupes() {
 		return renameDupes.isSelected();
@@ -126,6 +127,10 @@ public class TextureMapper extends Application {
 
 	public boolean getPortSoloTextures() {
 		return portSoloTextures.isSelected();
+	}
+	
+	public boolean getBmpPngDdsFormats() {
+		return bmpPngDdsFormats.isSelected();
 	}
 
 	public static void main(String[] args) {
@@ -231,8 +236,12 @@ public class TextureMapper extends Application {
 		renameDupes = new CheckBox();
 		renameDupes.setText("Rename");
 		renameDupes.setTooltip(new Tooltip("Rename (don't overwrite) multiple duplicates"));
+		
+		bmpPngDdsFormats = new CheckBox();
+		bmpPngDdsFormats.setText("Formats");
+		bmpPngDdsFormats.setTooltip(new Tooltip("All image files present in the batch file (BMP, PNG, DDS)"));
 
-		ToolBar toolbarRight = new ToolBar(new Spacer(), error, renameDupes, portSoloTextures, matchAuthor, gameList);
+		ToolBar toolbarRight = new ToolBar(new Spacer(), error, renameDupes, portSoloTextures, matchAuthor, bmpPngDdsFormats, gameList);
 		toolbarRight.setPadding(new Insets(0, 0, 0, 0));
 		toolbarRight.setBackground(null);
 
@@ -315,11 +324,17 @@ public class TextureMapper extends Application {
 
 									if (getMatchAuthor())
 										destinationHash += "\\" + author;
-
+									
 									print_line.println("copy " + sourceHash + ".dds " + selectedGame + "\\"
 											+ destinationHash + ".dds");
+									if (getBmpPngDdsFormats()) {
+										print_line.println("copy " + sourceHash + ".bmp " + selectedGame + "\\"
+												+ destinationHash + ".bmp");
+										print_line.println("copy " + sourceHash + ".png " + selectedGame + "\\"
+												+ destinationHash + ".png");
+									}
+										
 								}
-								duplicateText.appendText("\n");
 							}
 						}
 						print_line.close();
