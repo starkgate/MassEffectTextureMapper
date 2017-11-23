@@ -18,4 +18,4 @@ Textures in those games are represented by hashes (hexadecimal IDs, ie 0x1234567
 4. Copy/paste the .bat file into the directory your textures are in.
 - Only BMP, PNG, DDS extensions are supported for the copying, though you can easily modify the batch file yourself to change the extension.
 - Make sure your textures are named eg "0x12345678.dds". "text\_0x1234678.dds" will not work. This limitation will be fixed soon.
-5. Run the .bat file. The ported textures will be located in a new folder named ME1, ME2 or ME3.
+6. Run the .bat file. The ported textures will be located in a new folder named ME1, ME2 or ME3.
