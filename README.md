@@ -8,13 +8,13 @@ Textures in those games are represented by hashes (hexadecimal IDs, ie 0x1234567
 
 **Usage**
 
-1. Input the list of the hashes you wish to port in the left pane. One hash per line. ie
+1. Input the list of the files you wish to port in the left pane. One file per line. File names can be whatever you like, as long as the hashes are present in them. ie
 
 0x12345678
 
-0x0ABCDEF1
+0x0ABCDEF1.dds
 
-0x23456780
+whatever\_0x23456780.bmp
 
 2. Select the options you need. Hover over each checkbox to view the functionnality they provide in a tooltip.
 
