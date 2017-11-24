@@ -327,12 +327,12 @@ public class TextureMapper extends Application {
 										destinationHash += "\\" + author;
 									
 									print_line.println("xcopy *" + sourceHash + "*.dds " + selectedGame + "\\"
-											+ destinationHash + ".dds");
+											+ destinationHash + ".dds* /Y");
 									if (getBmpPngDdsFormats()) {
 										print_line.println("xcopy *" + sourceHash + "*.bmp " + selectedGame + "\\"
-												+ destinationHash + ".bmp");
+												+ destinationHash + ".bmp* /Y");
 										print_line.println("xcopy *" + sourceHash + "*.png " + selectedGame + "\\"
-												+ destinationHash + ".png");
+												+ destinationHash + ".png* /Y");
 									}
 										
 								}
