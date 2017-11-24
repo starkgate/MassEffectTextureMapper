@@ -25,6 +25,6 @@ Only BMP, PNG, DDS extensions are supported for the copying, though you can easi
 
 ![](https://i.imgur.com/5qcXIoe.png)
 
-6. Run the .bat file. The ported textures will be located in a new folder named ME1, ME2 or ME3.
+5. Run the .bat file. The ported textures will be located in a new folder named ME1, ME2 or ME3.
 
 ![](https://i.imgur.com/lz5fdjH.png)
