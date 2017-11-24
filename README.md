@@ -23,7 +23,6 @@ whatever\_0x23456780.bmp
 3. Click Go. The tool will match your hashes with the database, and create a batch file (.bat) in the directory you ran it from. It will be named ME1.bat, or ME2.bat, or ME3.bat, depending on which game you're porting to.
 
 4. Copy/paste the .bat file into the directory your textures are in.
-- Only BMP, PNG, DDS extensions are supported for the copying, though you can easily modify the batch file yourself to change the extension.
-- Make sure your textures are named eg "0x12345678.dds". "text\_0x1234678.dds" will not work. This limitation will be fixed soon.
+Only BMP, PNG, DDS extensions are supported for the copying, though you can easily modify the batch file yourself to change the extension.
 
 6. Run the .bat file. The ported textures will be located in a new folder named ME1, ME2 or ME3.
