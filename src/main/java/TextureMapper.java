@@ -133,7 +133,7 @@ public class TextureMapper extends Application {
 		return bmpPngDdsFormats.isSelected();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String args[]) {
 		launch(args);
 	}
 
@@ -326,12 +326,12 @@ public class TextureMapper extends Application {
 									if (getMatchAuthor())
 										destinationHash += "\\" + author;
 									
-									print_line.println("copy *" + sourceHash + "*.dds " + selectedGame + "\\"
+									print_line.println("xcopy *" + sourceHash + "*.dds " + selectedGame + "\\"
 											+ destinationHash + ".dds");
 									if (getBmpPngDdsFormats()) {
-										print_line.println("copy *" + sourceHash + "*.bmp " + selectedGame + "\\"
+										print_line.println("xcopy *" + sourceHash + "*.bmp " + selectedGame + "\\"
 												+ destinationHash + ".bmp");
-										print_line.println("copy *" + sourceHash + "*.png " + selectedGame + "\\"
+										print_line.println("xcopy *" + sourceHash + "*.png " + selectedGame + "\\"
 												+ destinationHash + ".png");
 									}
 										
