@@ -306,6 +306,7 @@ public class TextureMapper extends Application {
 									 * - Copy textures in subfolders, following author
 									 * - Don't port solo (not portable to another game) textures
 									 * - Rename duplicates (no overwriting)
+									 * - BMP, PNG, DDS support
 									 */
 
 									if (getRenameDupes()) {
@@ -325,12 +326,12 @@ public class TextureMapper extends Application {
 									if (getMatchAuthor())
 										destinationHash += "\\" + author;
 									
-									print_line.println("copy " + sourceHash + ".dds " + selectedGame + "\\"
+									print_line.println("copy *" + sourceHash + "*.dds " + selectedGame + "\\"
 											+ destinationHash + ".dds");
 									if (getBmpPngDdsFormats()) {
-										print_line.println("copy " + sourceHash + ".bmp " + selectedGame + "\\"
+										print_line.println("copy *" + sourceHash + "*.bmp " + selectedGame + "\\"
 												+ destinationHash + ".bmp");
-										print_line.println("copy " + sourceHash + ".png " + selectedGame + "\\"
+										print_line.println("copy *" + sourceHash + "*.png " + selectedGame + "\\"
 												+ destinationHash + ".png");
 									}
 										
@@ -357,9 +358,9 @@ public class TextureMapper extends Application {
 		RowConstraints emptyRow = new RowConstraints();
 		RowConstraints rowConstraints = new RowConstraints();
 		rowConstraints.setVgrow(Priority.ALWAYS);
-		leftGrid.getRowConstraints().add(emptyRow); // aucune propriété sur la première ligne
-		leftGrid.getRowConstraints().add(emptyRow); // ni sur la 2ème
-		leftGrid.getRowConstraints().add(rowConstraints); // scale pour la 3ème
+		leftGrid.getRowConstraints().add(emptyRow); // aucune propriete sur la premiere ligne
+		leftGrid.getRowConstraints().add(emptyRow); // ni sur la 2eme
+		leftGrid.getRowConstraints().add(rowConstraints); // scale pour la 3eme
 		rightGrid.getRowConstraints().add(emptyRow);
 		rightGrid.getRowConstraints().add(emptyRow);
 		rightGrid.getRowConstraints().add(rowConstraints);
